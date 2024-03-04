@@ -13,7 +13,10 @@ git clone <repository-url>
 ## Usage
 
 ### Running the Application
-Execute the following command to run a sample queue application locally, on a Docker container
+Execute the following command to run a sample queue application locally, on a Docker container.
+
+You should see some stuff printed out on the terminal.
+
 
 ```bash
 make run-local
