@@ -5,10 +5,10 @@ A concurrent task queue implemented from scratch, using only Redis and Python pr
 
 ## Installation
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   ```
+Clone the repository:
+```bash
+git clone <repository-url>
+```
 
 ## Usage
 

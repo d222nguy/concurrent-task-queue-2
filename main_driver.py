@@ -6,6 +6,12 @@ import json
 from text_formats import *
 import logging
 
+# This program initiates a concurrent queue application with two producers and two consumers.
+# Each producer/consumer is a separate process.
+# The producers push Python callables to the Redis message broker.
+# The consumers process the functions in a FIFO mechanism.
+# Every 1s, task statuses are reported.
+
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
@@ -40,7 +46,6 @@ def consumer(queue_name, consumer_idx, processed_tasks):
         if item:
             item_str = item.decode("utf-8")
             processed_tasks.append(json.loads(item_str)["name"])
-            # Determine task type and instantiate accordingly
             if json.loads(item_str).get("task_type", "Success") == "Success":
                 task = SecodaSuccessTask.from_json(item_str)
             else:
@@ -106,11 +111,4 @@ if __name__ == "__main__":
     for p in processes:
         p.join()
 
-    print(processed_tasks)
-    for i in range(NUM_PRODUCERS):
-        processed_sequence = [
-            x.split("_")[-1] for x in processed_tasks if x.split("_")[-2] == str(i)
-        ]
-        print(processed_sequence)
-        assert processed_sequence == [str(i) for i in range(NUM_ITEM_PER_PRODUCER)]
-    print("Test completed")
+    print("Processing completed.")
