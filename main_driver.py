@@ -5,6 +5,7 @@ from Task import SecodaSuccessTask, SecodaFailedTask
 import json
 from text_formats import *
 import logging
+from typing import List
 
 # This program initiates a concurrent queue application with two producers and two consumers.
 # Each producer/consumer is a separate process.
@@ -21,7 +22,7 @@ NUM_CONSUMERS = 2
 NUM_ITEM_PER_PRODUCER = 5
 
 
-def producer(queue_name, producer_idx, num_items):
+def producer(queue_name: str, producer_idx: int, num_items: int) -> None:
     """
     Function representing a producer which enqueues tasks into the Redis queue.
     """
@@ -36,7 +37,7 @@ def producer(queue_name, producer_idx, num_items):
         time.sleep(1)  # Simulate time-consuming tasks
 
 
-def consumer(queue_name, consumer_idx, processed_tasks):
+def consumer(queue_name: str, consumer_idx: int, processed_tasks: List[str]) -> None:
     """
     Function representing a consumer which dequeues and processes tasks from the Redis queue.
     """
