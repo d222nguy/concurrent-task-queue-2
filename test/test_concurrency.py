@@ -1,7 +1,7 @@
 import multiprocessing
 import time
 from Queue import SecodaQueue 
-from Task import SecodaTask, SecodaSuccessTask, SecodaFailedTask
+from Task import SecodaSuccessTask, SecodaFailedTask
 import json 
 from text_formats import *
 import logging 
@@ -43,7 +43,7 @@ def consumer(queue_name, consumer_idx):
                 task = SecodaFailedTask.from_json(item_str)
      
             task()
-            queue_broker.update_task_redis(task)
+            queue_broker.update_task_status_redis(task)
             print_color(Colors.GREEN, f"Consumer {consumer_idx}: Consumed {item_str}")
         else: 
             print_color(Colors.RED, f'Consumer {consumer_idx}: No item left.')

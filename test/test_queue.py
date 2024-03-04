@@ -1,10 +1,8 @@
 import pytest
 from Queue import SecodaQueue  # Update import paths as needed
-from Task import SecodaTask, SecodaSuccessTask, SecodaFailedTask
+from Task import SecodaSuccessTask, SecodaFailedTask
 import json
 import redis 
-import time 
-import multiprocessing 
 
 def test_enqueue_dequeue_redis():
     '''
@@ -52,16 +50,16 @@ def test_update_task_redis():
 
     queue = SecodaQueue('test_queue_1')
     task = SecodaSuccessTask('test_task_1')
-    queue.update_task_redis(task)
+    queue.update_task_status_redis(task)
 
-    statuses = queue.get_all_task_statuses('test_queue_1')
+    statuses = queue.get_all_task_statuses()
     print(statuses)
 
     # Only queued, was not executed - status should be should be 'Queued'
     assert statuses == {'test_task_1': 'Queued'}
     task()
-    queue.update_task_redis(task)
-    statuses = queue.get_all_task_statuses('test_queue_1')
+    queue.update_task_status_redis(task)
+    statuses = queue.get_all_task_statuses()
 
     # Status should be 'Success'
     assert statuses == {'test_task_1': 'Success'}
@@ -69,7 +67,7 @@ def test_update_task_redis():
     # Status should be 'Failed'
     failed_task = SecodaFailedTask('test_task_2')
     failed_task()
-    queue.update_task_redis(failed_task)
-    statuses = queue.get_all_task_statuses('test_queue_1')
+    queue.update_task_status_redis(failed_task)
+    statuses = queue.get_all_task_statuses()
     assert statuses == {'test_task_1': 'Success', 'test_task_2': 'Failed'}   
 
